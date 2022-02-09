@@ -2,8 +2,9 @@ import torch
 import torch.nn as nn
 import os
 import requests
-
+import os.path
 from .vonenet import VOneNet
+
 from torch.nn import Module
 
 FILE_WEIGHTS = {'alexnet': 'vonealexnet_e70.pth.tar', 'resnet50': 'voneresnet50_e70.pth.tar',
@@ -25,7 +26,8 @@ def get_model(model_arch='resnet50', pretrained=True, map_location='cpu', **kwar
     """
     if pretrained and model_arch:
         url = f'https://vonenet-models.s3.us-east-2.amazonaws.com/{FILE_WEIGHTS[model_arch.lower()]}'
-        home_dir = os.environ['HOME']
+        #home_dir = os.environ['HOME']
+        home_dir  = os.path.expanduser('~')
         vonenet_dir = os.path.join(home_dir, '.vonenet')
         weightsdir_path = os.path.join(vonenet_dir, FILE_WEIGHTS[model_arch.lower()])
         if not os.path.exists(vonenet_dir):
@@ -69,3 +71,4 @@ def get_model(model_arch='resnet50', pretrained=True, map_location='cpu', **kwar
     model.to(map_location)
     return model
 
+#%%

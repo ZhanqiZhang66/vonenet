@@ -90,6 +90,14 @@ class VOneBlock(nn.Module):
         s = self.simple(s_q0[:, 0:self.simple_channels, :, :])
         return self.gabors(self.k_exc * torch.cat((s, c), 1))
 
+    def gabors_f_2(self, x):
+        s_q0 = self.simple_conv_q0(x)
+        s_q1 = self.simple_conv_q1(x)
+        # c = self.complex(torch.sqrt(s_q0[:, self.simple_channels:, :, :] ** 2 +
+        #                             s_q1[:, self.simple_channels:, :, :] ** 2) / np.sqrt(2))
+        # s = self.simple(s_q0[:, 0:self.simple_channels, :, :])
+        return  torch.cat((s_q0, s_q1), 1)
+
     def noise_f(self, x):
         if self.noise_mode == 'neuronal':
             eps = 10e-5
